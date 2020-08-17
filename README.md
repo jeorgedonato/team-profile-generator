@@ -11,6 +11,7 @@ To make a web app that can create HTML of team profiles.
 - **CSS**
 - **Javascript**
 - **Nodejs**
+- **Bulma CSS Framework**
 
 ### Installation
 
@@ -28,11 +29,7 @@ To make a web app that can create HTML of team profiles.
 
 **Screenshots**
 
-![Home Screenshot](/assets/images/home-screenshot.jpg)
-
-<!-- ![Validation Screenshot](/assets/function-screenshot.jpg) -->
-
-![Function Screenshot](/assets/images/function-screenshot.jpg)
+![Home Screenshot](/assets/output-screenshot.png)
 
 ---
 

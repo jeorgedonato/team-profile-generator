@@ -77,7 +77,7 @@ const userPrompt = userType => {
       const renderedHtml = render(employeeArr);
       fs.writeFile(outputPath, renderedHtml, err => {
         if (err) throw err;
-        console.log('----------------------------------- \nThe file has been created!\n -----------------------------------');
+        console.log('----------------------------------- \nThe file has been created!\n Check your file here ' + outputPath + ' \n-----------------------------------');
       });
     }
   }).catch(err => {

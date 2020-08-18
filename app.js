@@ -8,26 +8,35 @@ const inquirer = require('inquirer');
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
-console.log(outputPath)
-const qType = {
-  Manager: { type: 'input', name: 'fourthParam', message: 'What is the office number?' },
-  Engineer: { type: 'input', name: 'fourthParam', message: 'What is the github username?' },
-  Intern: { type: 'input', name: 'fourthParam', message: 'What is the school name?' }
-};
-const employeeArr = [];
 
-const startPrompt = () => {
+// const qType = {
+//   Manager: { type: 'input', name: 'fourthParam', message: 'What is the office number?' },
+//   Engineer: { type: 'input', name: 'fourthParam', message: 'What is the github username?' },
+//   Intern: { type: 'input', name: 'fourthParam', message: 'What is the school name?' }
+// };
+// const employeeArr = [];
+
+function Employee() {
+  this.qType = {
+    Manager: { type: 'input', name: 'fourthParam', message: 'What is the office number?' },
+    Engineer: { type: 'input', name: 'fourthParam', message: 'What is the github username?' },
+    Intern: { type: 'input', name: 'fourthParam', message: 'What is the school name?' }
+  };
+  this.employeeArr = [];
+}
+
+Employee.prototype.startPrompt = function () {
   inquirer.prompt([{
     type: 'list',
     name: 'userType',
     message: 'Which of the following choices are you going to add?',
     choices: ['Manager', 'Engineer', 'Intern']
   }]).then(({ userType }) => {
-    userPrompt(userType);
+    this.userPrompt(userType);
   });
 };
 
-const userPrompt = userType => {
+Employee.prototype.userPrompt = function (userType) {
   inquirer.prompt([{
     type: 'input',
     name: 'name',
@@ -39,7 +48,7 @@ const userPrompt = userType => {
     name: 'id',
     message: 'Please provide the id number of the employee.',
     default: () => {
-      return employeeArr.length + 1;
+      return this.employeeArr.length + 1;
     }
   },
   {
@@ -48,7 +57,7 @@ const userPrompt = userType => {
     message: 'Please provide the email of the employee.',
     default: 'johndoe@email.com'
   },
-  qType[userType],
+  this.qType[userType],
   {
     type: 'confirm',
     name: 'addMore',
@@ -58,23 +67,23 @@ const userPrompt = userType => {
 
     switch (userType) {
       case 'Manager':
-        employeeArr.push(new Manager(name, id, email, fourthParam));
+        this.employeeArr.push(new Manager(name, id, email, fourthParam));
         break;
       case 'Engineer':
-        employeeArr.push(new Engineer(name, id, email, fourthParam));
+        this.employeeArr.push(new Engineer(name, id, email, fourthParam));
         break;
       case 'Intern':
-        employeeArr.push(new Intern(name, id, email, fourthParam));
+        this.employeeArr.push(new Intern(name, id, email, fourthParam));
         break;
       default:
-        employeeArr.push(new Manager(name, id, email, fourthParam));
+        this.employeeArr.push(new Manager(name, id, email, fourthParam));
         break;
     }
     if (addMore) {
       console.log('----------------------------------- \n Add another employee \n -----------------------------------');
-      startPrompt();
+      this.startPrompt();
     } else {
-      const renderedHtml = render(employeeArr);
+      const renderedHtml = render(this.employeeArr);
       fs.writeFile(outputPath, renderedHtml, err => {
         if (err) throw err;
         console.log('----------------------------------- \nThe file has been created!\n Check your file here ' + outputPath + ' \n-----------------------------------');
@@ -86,7 +95,8 @@ const userPrompt = userType => {
   });
 };
 
-startPrompt();
+const emp = new Employee();
+emp.startPrompt();
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 // After the user has input all employees desired, call the `render` function (required
